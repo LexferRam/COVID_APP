@@ -2,7 +2,7 @@
 	nav {
 		width: 150% !important;
 	}
-	li {
+	#globalData > ul > li {
 		margin-bottom: 70px;
 	}
 }
