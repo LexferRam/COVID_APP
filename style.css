@@ -2,4 +2,7 @@
 	nav {
 		width: 150% !important;
 	}
+	li {
+		margin-bottom: 50px;
+	}
 }
