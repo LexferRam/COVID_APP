@@ -168,7 +168,7 @@ function drawChart() {
                     sessionStorage.setItem('NewConfirmedCountry', datos.Countries[i].NewConfirmed);
 
                     totalCasosPaiss.innerHTML = `
-                       <b> Total de casos:</b> ${sessionStorage.getItem('TotalRecoveredCountry')}
+                       <b> Total de casos:</b> ${sessionStorage.getItem('TotalConfirmedCountry')}
                     `;
 
 
@@ -195,6 +195,8 @@ function drawChart() {
     ['Total Recuperados', parseInt(sessionStorage.getItem('TotalRecoveredCountry'))],
     ['Total Fallecidos', parseInt(sessionStorage.getItem('TotalDeathsCountry'))],
     ['Nuevos Casos confirmados', parseInt(sessionStorage.getItem('NewConfirmedCountry'))]
+      ,
+    ['Casos activos', parseInt(sessionStorage.getItem('TotalConfirmedCountry')-(sessionStorage.getItem('TotalRecoveredCountry')+sessionStorage.getItem('TotalDeathsCountry')+sessionStorage.getItem('NewConfirmedCountry')))]
   ]);
 
   // Set chart options
