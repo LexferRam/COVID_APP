@@ -30,13 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
             llenarTabla(datos)
         });
 
-    Swal.fire({
-        icon: 'warning',
-        showConfirmButton: false,
-        title: 'Cargando...',
-        timer: 5000, timerProgressBar: true
-    })
-
 })
 
 //actualizando y limpiando datos con los btns
