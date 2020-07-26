@@ -12,6 +12,12 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     
     <title>API fetch COVID 19</title>
+    <style>
+        @media (max-width:500px)  {
+            #totalCasosPaiss{margin-left:-90px}
+            #chart_div{margin-left:-40px}
+        }
+    </style>
 </head>
 
 <body>
@@ -23,32 +29,43 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./statistics.html">Statistics</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="global.html">Global</a>
                 </li>
             </ul>
-            <span class="navbar-text">
-                Navbar text with an inline element
-            </span>
+            
         </div>
     </nav>
 
     <div class="container mt-5">
-        <div id="globalData">
+        <div id="globalData"></div>
+        <div id="chart_div"></div>
+        <div class="row">
+            <div class="col-md-5 offset-md-1">
+                <form class="d-flex">
+                    <div class="form-group mr-3">
 
+                        <input type="text" id="pais" class="form-control" placeholder="Ver estadisticas por pais">
+                        
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Buscar" id="GenerarGraf" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
         </div>
- <div id="chart_div">
-
+        <div class="row">
+            <col>
+            <p id="totalCasosPaiss" style="margin-left:100px"></p>
+                <div id="graf_Pais">
+                </div>
         </div>
-
-
+    
+    
     </div>
 
     <script>
@@ -68,7 +85,6 @@
                 sessionStorage.setItem('TotalRecovered', datos.Global.TotalRecovered);
                 sessionStorage.setItem('TotalDeaths', datos.Global.TotalDeaths);
                 sessionStorage.setItem('NewRecovered', datos.Global.NewRecovered);
-                alert(sessionStorage.getItem('TotalConfirmed'))
                 
                     globalData.innerHTML += `
             <ul>
@@ -86,39 +102,134 @@
 
         })
         
+           // Load the Visualization API and the corechart package.
+   google.charts.load('current', {'packages':['corechart']});
+
+// Set a callback to run when the Google Visualization API is loaded.
+google.charts.setOnLoadCallback(drawChart);
+
+// Callback that creates and populates a data table,
+// instantiates the pie chart, passes in the data and
+// draws it.
+function drawChart() {        
+    
+    
+  // Create the data table.
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Topping');
+  data.addColumn('number', 'Slices');
+  data.addRows([
+  // ['TotalConfirmed', parseInt(sessionStorage.getItem('TotalConfirmed'))],
+    ['TotalRecovered', parseInt(sessionStorage.getItem('TotalRecovered'))],
+    ['TotalDeaths', parseInt(sessionStorage.getItem('TotalDeaths'))],
+    ['NewRecovered', parseInt(sessionStorage.getItem('NewRecovered'))]
+  ]);
+
+  // Set chart options
+  var options = {'title':'Estadisticas Mundiales',
+                 'width':500,
+                 'is3D':true,
+                 'height':300};
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+  chart.draw(data, options);
+}
+      
+    //   generando chart por pais
+    
+    const btnGenGraf = document.querySelector('#GenerarGraf');
+    
+    btnGenGraf.addEventListener('click', (e) => {
+        // var country = pais.toLowerCase();
+        const graf_Pais = document.querySelector('#graf_Pais');
+        graf_Pais.innerHTML = '';
         
-         // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
+        fetch('https://api.covid19api.com/summary')
+        .then(resp => resp.json())
+        .then((datos) => {
+            
+            var pais = document.querySelector('#pais').value;
+            graf_Pais.innerHTML = '';
+            const texto = pais.toLowerCase();//valor del input en minusculas
+            const totalCasosPaiss = document.querySelector('#totalCasosPaiss');
+            totalCasosPaiss.innerHTML = '';
+            
+            
+            for (i = 0; i <= datos.Countries.length; i++) {
+                const Country = datos.Countries[i].Country.toLowerCase();
+                console.log(texto)
+                
+                
+                if (Country.indexOf(texto) !== -1) {
+                    sessionStorage.setItem('TotalConfirmedCountry', datos.Countries[i].TotalConfirmed);
+                    sessionStorage.setItem('TotalRecoveredCountry', datos.Countries[i].TotalRecovered);
+                    sessionStorage.setItem('TotalDeathsCountry', datos.Countries[i].TotalDeaths);
+                    sessionStorage.setItem('NewConfirmedCountry', datos.Countries[i].NewConfirmed);
 
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+                    totalCasosPaiss.innerHTML = `
+                       <b> Total de casos:</b> ${sessionStorage.getItem('TotalRecoveredCountry')}
+                    `;
 
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {        
-          
-          
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
-        data.addRows([
-         ['TotalConfirmed', parseInt(sessionStorage.getItem('TotalConfirmed'))],
-          ['TotalRecovered', parseInt(sessionStorage.getItem('TotalRecovered'))],
-          ['TotalDeaths', parseInt(sessionStorage.getItem('TotalDeaths'))],
-          ['NewRecovered', parseInt(sessionStorage.getItem('NewRecovered'))]
-        ]);
- 
-        // Set chart options
-        var options = {'title':'Statistics wroldwide',
-                       'width':400,
-                       'height':300};
 
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ // Load the Visualization API and the corechart package.
+ google.charts.load('current', {'packages':['corechart']});
+
+// Set a callback to run when the Google Visualization API is loaded.
+google.charts.setOnLoadCallback(drawChart);
+
+// Callback that creates and populates a data table,
+// instantiates the pie chart, passes in the data and
+// draws it.
+function drawChart() {        
+    
+    
+  // Create the data table.
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Topping');
+  data.addColumn('number', 'Slices');
+  data.addRows([
+  // ['Total Confirmados', parseInt(sessionStorage.getItem('TotalConfirmedCountry'))],
+    ['Total Recuperados', parseInt(sessionStorage.getItem('TotalRecoveredCountry'))],
+    ['Total Fallecidos', parseInt(sessionStorage.getItem('TotalDeathsCountry'))],
+    ['Nuevos Casos confirmados', parseInt(sessionStorage.getItem('NewConfirmedCountry'))]
+  ]);
+
+  // Set chart options
+  var options = {'title':'Estadistica por pais',
+                 'width':500,
+                 'is3D':true,
+                 'height':300};
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.PieChart(document.getElementById('graf_Pais'));
+  chart.draw(data, options);
+}
+                    return
+                }
+                
+            }
+
+
+
+
+        });
+
+
+
+
+
+
+
+
+
+        e.preventDefault();
+    })
+    
+
+
     </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -134,3 +245,4 @@
 </body>
 
 </html>
+
