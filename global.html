@@ -64,6 +64,11 @@
                 .then((datos) => {
                     console.log(datos.Global)
 
+                sessionStorage.setItem('TotalConfirmed', ${datos.Global.TotalConfirmed});
+                sessionStorage.setItem('TotalRecovered', ${datos.Global.TotalRecovered});
+                sessionStorage.setItem('TotalDeaths', ${datos.Global.TotalDeaths});
+                sessionStorage.setItem('NewRecovered', ${datos.Global.NewRecovered});
+                
                     globalData.innerHTML += `
             <ul>
                 <li><b>TOTAL CONFIRMADOS: </b>${datos.Global.TotalConfirmed}</li>
@@ -91,19 +96,18 @@
       // instantiates the pie chart, passes in the data and
       // draws it.
       function drawChart() {
-
+  
         // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Topping');
         data.addColumn('number', 'Slices');
         data.addRows([
-          ['Mushrooms', 3],
-          ['Onions', 1],
-          ['Olives', 1],
-          ['Zucchini', 1],
-          ['Pepperoni', 2]
+         ['TotalConfirmed', sessionStorage.getItem('TotalConfirmed')],
+          ['TotalRecovered', sessionStorage.getItem('TotalRecovered')],
+          ['TotalDeaths', sessionStorage.getItem('TotalDeaths')],
+          ['NewRecovered', sessionStorage.getItem('NewRecovered')]
         ]);
-
+ 
         // Set chart options
         var options = {'title':'How Much Pizza I Ate Last Night',
                        'width':400,
