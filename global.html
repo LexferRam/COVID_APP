@@ -64,10 +64,11 @@
                 .then((datos) => {
                     console.log(datos.Global)
 
-                sessionStorage.setItem('TotalConfirmed', ${datos.Global.TotalConfirmed});
-                sessionStorage.setItem('TotalRecovered', ${datos.Global.TotalRecovered});
-                sessionStorage.setItem('TotalDeaths', ${datos.Global.TotalDeaths});
-                sessionStorage.setItem('NewRecovered', ${datos.Global.NewRecovered});
+                sessionStorage.setItem('TotalConfirmed', datos.Global.TotalConfirmed);
+                sessionStorage.setItem('TotalRecovered', datos.Global.TotalRecovered);
+                sessionStorage.setItem('TotalDeaths', datos.Global.TotalDeaths);
+                sessionStorage.setItem('NewRecovered', datos.Global.NewRecovered);
+                alert(sessionStorage.getItem('TotalConfirmed'))
                 
                     globalData.innerHTML += `
             <ul>
