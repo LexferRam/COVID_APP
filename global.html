@@ -96,27 +96,11 @@
       // Callback that creates and populates a data table,
       // instantiates the pie chart, passes in the data and
       // draws it.
-      function drawChart() {
-  
-          
-          // Create the data table.
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Topping');
-      data.addColumn('number', 'Slices');
-      data.addRows([
-        ['Mushrooms', 3],
-        ['Onions', 1],
-        ['Olives', 1], 
-        ['Zucchini', 1],
-        ['Pepperoni', 2]
-      ]);
-          
-          
-          
+      function drawChart() {        
           
           
         // Create the data table.
-       /* var data = new google.visualization.DataTable();
+        var data = new google.visualization.DataTable();
         data.addColumn('string', 'Topping');
         data.addColumn('number', 'Slices');
         data.addRows([
@@ -124,10 +108,10 @@
           ['TotalRecovered', parseInt(sessionStorage.getItem('TotalRecovered'))],
           ['TotalDeaths', parseInt(sessionStorage.getItem('TotalDeaths'))],
           ['NewRecovered', parseInt(sessionStorage.getItem('NewRecovered'))]
-        ]);*/
+        ]);
  
         // Set chart options
-        var options = {'title':'How Much Pizza I Ate Last Night',
+        var options = {'title':'Statistics wroldwide',
                        'width':400,
                        'height':300};
 
