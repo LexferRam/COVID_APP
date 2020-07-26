@@ -196,7 +196,7 @@ function drawChart() {
     ['Total Fallecidos', parseInt(sessionStorage.getItem('TotalDeathsCountry'))],
     ['Nuevos Casos confirmados', parseInt(sessionStorage.getItem('NewConfirmedCountry'))]
       ,
-    ['Casos activos', parseInt(sessionStorage.getItem('TotalConfirmedCountry')-(sessionStorage.getItem('TotalRecoveredCountry')+sessionStorage.getItem('TotalDeathsCountry')+sessionStorage.getItem('NewConfirmedCountry')))]
+    ['Casos activos', parseInt(sessionStorage.getItem('TotalConfirmedCountry')-(parseInt(sessionStorage.getItem('TotalRecoveredCountry'))+parseInt(sessionStorage.getItem('TotalDeathsCountry'))+parseInt(sessionStorage.getItem('NewConfirmedCountry'))))]
   ]);
 
   // Set chart options
